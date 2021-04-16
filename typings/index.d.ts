@@ -2804,8 +2804,16 @@ declare module 'discord.js' {
     footer?: Partial<MessageEmbedFooter> & { icon_url?: string; proxy_icon_url?: string };
   }
 
+  interface InteractionOptions {
+    type: number;
+    value: string;
+    name: string;
+    options?: InteractionOptions[];
+  }
+
   interface Interaction {
     id: string;
+    token: string;
     channel: TextChannel;
     guild: Guild;
     member: GuildMember | null;
@@ -2813,7 +2821,44 @@ declare module 'discord.js' {
     name: string;
     content: string;
     createdTimestamp: number;
-    options: { value: string; name: string }[] | null;
+    options?: InteractionOptions[];
+    /**
+     * Replies to this Interaction.
+     *
+     * **Note:** Ephemeral messages don't appear to support embeds at this time.
+     * @arg input - A message string, embed array, or object containing both
+     * @arg ephemeral - Make the reply viewable only to the command sender. If false, reply is public
+     * @returns A Promise that resolves a `messageId` which can be used with `.edit(...)` and `.delete(...)`
+     */
+    reply: (
+      input?: string | MessageEmbed[] | { content: string; embeds: MessageEmbed[] },
+      ephemeral?: boolean,
+    ) => Promise<string>;
+    /**
+     * Edit a previous reply to this Interaction
+     *
+     * **Note:** Ephemeral messages don't appear to support embeds at this time.
+     * @arg input - A message string, embed array, or object containing both
+     * @arg messageId - The id of the message to delete. If omitted, the original reply message is deleted.
+     */
+    edit: (
+      input?: string | MessageEmbed[] | { content: string; embeds: MessageEmbed[] },
+      messageId?: string,
+    ) => Promise<void>;
+    /**
+     * Sends a simple reply that makes the bot say "is thinking..."
+     *
+     * **Note:** You must use `.edit(...)` if you want to update the reply with an actual message later on.
+     * @arg ephemeral - Make the reply viewable only to the command sender. If false, reply is public
+     */
+    thinking: (ephemeral?: boolean) => Promise<void>;
+    /**
+     * Deletes a reply to the Interaction
+     *
+     * **Note:** You cannot delete ephemeral messages.
+     * @arg messageId - The id of the message to delete. If omitted, the original reply message is deleted.
+     */
+    delete: (messageId?: string) => Promise<void>;
   }
 
   interface MessageEmbedProvider {
