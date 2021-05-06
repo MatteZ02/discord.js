@@ -2925,7 +2925,7 @@ declare module 'discord.js' {
 
   interface InteractionOptions {
     type: number;
-    value: string;
+    value: string | number;
     name: string;
     options?: InteractionOptions[];
   }
