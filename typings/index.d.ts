@@ -2930,7 +2930,7 @@ declare module 'discord.js' {
     options?: InteractionOptions[];
   }
 
-  export interface Interaction {
+  interface Interaction {
     id: string;
     token: string;
     channel: TextChannel;
