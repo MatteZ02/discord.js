@@ -2,7 +2,7 @@
 
 const Action = require('./Action');
 const { Events } = require('../../util/Constants');
-const SnowflakeUtil = require('../../util/Snowflake');
+const SnowflakeUtil = require('../../util/SnowflakeUtil');
 
 const EPHEMERAL_FLAG_ID = 64;
 
