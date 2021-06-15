@@ -69,7 +69,7 @@ class InteractionCreateAction extends Action {
 
         const replyRequest = !sentInitialReply
           ? client.api.interactions(interaction.id, interaction.token).callback.post(body)
-          : client.api.webhooks(client.user.id, interaction.token).post(body.data);
+          : client.api.webhooks(client.application.id, interaction.token).post(body.data);
 
         if (!sentInitialReply) sentInitialReply = true;
 
@@ -80,12 +80,12 @@ class InteractionCreateAction extends Action {
         if (!input) {
           throw new Error('Message content or embeds must be provided');
         }
-        await client.api.webhooks(client.user.id, interaction.token).messages(messageId).patch({
+        await client.api.webhooks(client.application.id, interaction.token).messages(messageId).patch({
           data: replyData,
         });
       },
       async delete(messageId = '@original') {
-        await client.api.webhooks(client.user.id, interaction.token).messages(messageId).delete();
+        await client.api.webhooks(client.application.id, interaction.token).messages(messageId).delete();
       },
       async thinking(ephemeral = false) {
         if (sentInitialReply) return;
